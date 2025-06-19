@@ -1,0 +1,40 @@
+version: 2.1
+description: Automaticly build and push to WebScraperWiki
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
+      - run:
+          name: Configure user
+          command: |
+            git config --global user.email "${GITHUB_EMAIL}"
+            git config --global user.name "${GITHUB_USERNAME}"
+      - run:
+          name: Clone wiki repo
+          command: |
+            git clone https://${GITHUB_API_KEY}@github.com/RockSolidProject/WebScraper.wiki.git wiki > /dev/null 2>&1 || echo "Clone failed"
+      - run:
+          name: Replace wiki files 
+          command: |
+            shopt -s extglob dotglob
+            rm -rfv wiki/!([.]*)
+            cp -rv !(wiki|.*) wiki/
+      - run:
+          name: Update remote 
+          command: |
+            cd wiki
+            git add -A
+            git commit -m "Added updates from WebScraper-wiki" || echo "No changes to commit"
+            git push origin master
+      
+
+workflows:
+  main:
+    jobs:
+      - build:
+        filters:
+          branches:
+            only: main
