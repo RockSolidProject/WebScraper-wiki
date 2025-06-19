@@ -39,6 +39,7 @@ Implementirane funkcionalnosti:
 * Gradle 8.7
 * Kotlin 1.9.22
 * Groovy: 3.0.17
+* Git (V primeri, če želite ta reposatorij dobiti na svojo napravo)
 ### Strojne zahteve
 * Sama plikacija ne potrebuje veliko virov
     * **CPU:** 1 jederni
